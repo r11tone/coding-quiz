@@ -25,3 +25,6 @@ MIT License
 -Timer
 -Local Storage
 -Quiz
+
+DEPLOYED SCREENSHOT
+  <img width="1440" alt="Screenshot 2022-12-11 at 4 30 02 PM" src="https://user-images.githubusercontent.com/117124864/206930065-3979722f-5e85-4a78-8cb9-e75231bcfe73.png">
