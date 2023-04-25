@@ -1,4 +1,3 @@
-// variables
 var welcomeEl = document.querySelector("#welcome");
 var startQuizBtnEl = document.querySelector("#startQuiz");
 var quizEl = document.querySelector("#quiz");
@@ -20,8 +19,6 @@ var highScores = [];
 var interval;
 var timeGiven = 75;
 var secondsElapsed = 0;
-
-
 
 var questions = [
     {
@@ -103,119 +100,118 @@ function checkAnswer(answer) {
     }
 }
 
-//displays a message for 2 seconds
+// Displays a message for 2 seconds
 function displayMessage(m) {
-    let messageHr = document.createElement("hr");
-    let messageEl = document.createElement("div");
+    const messageHr = document.createElement("hr");
+    const messageEl = document.createElement("div");
     messageEl.textContent = m;
     document.querySelector(".jumbotron").appendChild(messageHr);
     document.querySelector(".jumbotron").appendChild(messageEl);
-    setTimeout(function () {
-        messageHr.remove();
-        messageEl.remove();
+    setTimeout(() => {
+      messageHr.remove();
+      messageEl.remove();
     }, 2000);
-
-}
-
-//Hide element
-function hide(element) {
+  }
+  
+  // Hides an element
+  function hide(element) {
     element.style.display = "none";
-}
-
-//displays element
-function show(element) {
+  }
+  
+  // Displays an element
+  function show(element) {
     element.style.display = "block";
-}
-
-//reset local variables
-function reset() {
+  }
+  
+  // Resets local variables
+  function reset() {
     score = 0;
     currentQ = 0;
     secondsElapsed = 0;
     timerEl.textContent = 0;
-}
-
-//Rendering
-
-//Renders current question
-function renderQuestion() {
+  }
+  
+  // Renders current question
+  function renderQuestion() {
     questionEl.textContent = questions[currentQ].title;
-    for (i = 0; i < answersEl.children.length; i++) {
-        answersEl.children[i].children[0].textContent = `${(i + 1)}: ${questions[currentQ].choices[i]}`;
+    for (let i = 0; i < answersEl.children.length; i++) {
+      answersEl.children[i].children[0].textContent = `${i + 1}: ${
+        questions[currentQ].choices[i]
+      }`;
     }
-}
-
-//Renders high scores stored in local storage
-function renderHighScores() {
+  }
+  
+  // Renders high scores stored in local storage
+  function renderHighScores() {
     // Clear content
     scoresEl.innerHTML = "";
     show(highScoresEl);
-    highScores = JSON.parse(localStorage.getItem("scores"));
+    const highScores = JSON.parse(localStorage.getItem("scores")) || [];
     for (let i = 0; i < highScores.length; i++) {
-        let scoreItem = document.createElement("div");
-        scoreItem.className += "row mb-3 p-2";
-        console.log(scoreItem)
-        scoreItem.setAttribute("style", "background-color:PaleGreen;");
-        scoreItem.textContent = `${(i + 1)}. ${highScores[i].username} - ${highScores[i].userScore}`;
-        scoresEl.appendChild(scoreItem);
+      const scoreItem = document.createElement("div");
+      scoreItem.className += "row mb-3 p-2";
+      scoreItem.setAttribute("style", "background-color:PaleGreen;");
+      scoreItem.textContent = `${i + 1}. ${
+        highScores[i].username
+      } - ${highScores[i].userScore}`;
+      scoresEl.appendChild(scoreItem);
     }
-}
-
-
-//EVENTS
-
-//displays high scores
-viewHScoresBtnEl.addEventListener("click", function () {
+  }
+  
+  // EVENTS
+  
+  // Displays high scores
+  viewHScoresBtnEl.addEventListener("click", function () {
     hide(welcomeEl);
     hide(quizEl);
     hide(inputScoreEl);
     renderHighScores();
     stopTimer();
     reset();
-});
-
-//starts quiz from welcome page
-startQuizBtnEl.addEventListener("click", function () {
+  });
+  
+  // Starts quiz from welcome page
+  startQuizBtnEl.addEventListener("click", function () {
     hide(welcomeEl);
     startTimer();
     renderQuestion();
     show(quizEl);
-});
-
-//Calls to check answer selected and calls to next question if button is clicked
-answersEl.addEventListener("click", function (e) {
+  });
+  
+  // Calls to check answer selected and calls to next question if button is clicked
+  answersEl.addEventListener("click", function (e) {
     if (e.target.matches("button")) {
-        checkAnswer(e.target);
-        nextQuestion();
+      checkAnswer(e.target);
+      nextQuestion();
     }
-});
-
-//Creates a user score object to push to the local storage scores array calls to display high scores
-//calls to render high scores
-submitInitialsBtnEl.addEventListener("click", function () {
-    let initValue = initialsEl.value.trim();
+  });
+  
+  // Creates a user score object to push to the local storage scores array,
+  // calls to display high scores, and resets the quiz
+  submitInitialsBtnEl.addEventListener("click", function () {
+    const initValue = initialsEl.value.trim();
     if (initValue) {
-        let userScore = { username: initValue, userScore: score };
-        initialsEl.value = '';
-        highScores = JSON.parse(localStorage.getItem("scores")) || [];
-        highScores.push(userScore)
-        localStorage.setItem("scores", JSON.stringify(highScores));
-        hide(inputScoreEl);
-        renderHighScores();
-        reset();
+      const userScore = { username: initValue, userScore: score };
+      initialsEl.value = "";
+      const highScores = JSON.parse(localStorage.getItem("scores")) || [];
+      highScores.push(userScore);
+      localStorage.setItem("scores", JSON.stringify(highScores));
+      hide(inputScoreEl);
+      renderHighScores();
+      reset();
     }
-});
-
-//Goes back to Welcome page from High scores//
-goBackBtnEl.addEventListener("click", function () {
+  });
+  
+  // Goes back to Welcome page from High scores
+  goBackBtnEl.addEventListener("click", function () {
     hide(highScoresEl);
     show(welcomeEl);
-});
-
-//Clears saved scores from local storage//
-clearScoresBtnEl.addEventListener("click", function () {
-    highScores = [];
+  });
+  
+  // Clears saved scores from local storage
+  clearScoresBtnEl.addEventListener("click", function () {
+    const highScores = [];
     localStorage.setItem("scores", JSON.stringify(highScores));
     renderHighScores();
-});
-
+  });
+  
